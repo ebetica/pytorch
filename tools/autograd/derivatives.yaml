@@ -133,6 +133,9 @@
 - name: ceil(Tensor self)
   self: zeros_like(grad)
 
+- name: clamp(Tensor self, Scalar min)
+  self: grad * (self > 0)
+
 - name: clone(Tensor self)
   self: grad
 
