@@ -310,7 +310,7 @@ struct AnyModule::Holder : public AnyModule::Placeholder {
 
   std::unique_ptr<Placeholder> clone() const override {
     return torch::make_unique<Holder>(
-        std::static_pointer_cast<ModuleType>(module->clone()));
+        std::dynamic_pointer_cast<ModuleType>(module->clone()));
   }
 
   /// The actual concrete module instance.
