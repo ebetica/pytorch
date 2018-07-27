@@ -8,7 +8,7 @@ namespace torch {
 void manual_seed(uint64_t seed) {
   // TODO: Move this to at::Context
   at::globalContext().defaultGenerator(at::Backend::CPU).manualSeed(seed);
-  if (at::globalContext().hasCUDA()) {
+  if (at::globalContext().hasCUDA() && at::globalContext().getNumGPUs() > 0) {
     at::globalContext().defaultGenerator(at::Backend::CUDA).manualSeedAll(seed);
   }
 }
