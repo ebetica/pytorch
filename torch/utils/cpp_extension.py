@@ -148,6 +148,7 @@ class BuildExtension(build_ext):
     def build_extensions(self):
         self._check_abi()
         for extension in self.extensions:
+            extension.extra_compile_args.append('-DTORCH_WITH_PYTHON_BINDINGS')
             self._define_torch_extension_name(extension)
             self._add_gnu_abi_flag_if_binary(extension)
 
@@ -409,6 +410,7 @@ def include_paths(cuda=False):
     # so we need to pass -Itorch/lib/include/TH as well.
     paths = [
         lib_include,
+        os.path.join(lib_include, 'torch', 'csrc', 'api', 'include'),
         os.path.join(lib_include, 'TH'),
         os.path.join(lib_include, 'THC')
     ]
@@ -830,6 +832,7 @@ def _write_ninja_file(path,
         system_includes.clear()
 
     common_cflags = ['-DTORCH_EXTENSION_NAME={}'.format(name)]
+    common_cflags.append('-DTORCH_WITH_PYTHON_BINDINGS')
     common_cflags += ['-I{}'.format(include) for include in user_includes]
     common_cflags += ['-isystem {}'.format(include) for include in system_includes]
 

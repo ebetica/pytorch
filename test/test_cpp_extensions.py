@@ -315,6 +315,46 @@ class TestCppExtension(common.TestCase):
         result = module.half_test(x)
         self.assertEqual(result[0], 123)
 
+    def test_cpp_api_extension(self):
+        module = torch.utils.cpp_extension.load(
+            name='cpp_api_extension',
+            sources='cpp_extensions/cpp_api_extension.cpp',
+            verbose=True)
+
+        net = module.Net(3, 5)
+
+        self.assertTrue(net.is_training())
+        net.eval()
+        self.assertFalse(net.is_training())
+        net.train()
+        self.assertTrue(net.is_training())
+        net.eval()
+
+        input = torch.randn(2, 3, dtype=torch.float32)
+        output = net.forward(input)
+        self.assertEqual(output, net.forward(input))
+        self.assertEqual(list(output.shape), [2, 5])
+
+        bias = net.get_bias()
+        self.assertEqual(list(bias.shape), [5])
+        net.set_bias(bias + 1)
+        self.assertEqual(net.get_bias(), bias + 1)
+        output2 = net.forward(input)
+
+        self.assertNotEqual(output + 1, output2)
+
+        self.assertEqual(len(net.parameters()), 4)
+
+        p = net.named_parameters()
+        self.assertEqual(type(p), dict)
+        self.assertEqual(len(p), 4)
+        self.assertIn('fc.weight', p)
+        self.assertIn('fc.bias', p)
+        self.assertIn('bn.weight', p)
+        self.assertIn('bn.bias', p)
+
+
+
 
 if __name__ == '__main__':
     common.run_tests()
