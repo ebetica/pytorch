@@ -258,7 +258,7 @@ class TestCppExtension(common.TestCase):
             cpp_sources=cpp_source,
             functions='tanh_add',
             extra_cflags=['-g\n\n', '-O0 -Wall'],
-            extra_include_paths=['       cpp_extensions\n', '../'],
+            extra_include_paths=['       cpp_extensions\n'],
             verbose=True)
 
         x = torch.zeros(100, dtype=torch.float32)
@@ -352,8 +352,6 @@ class TestCppExtension(common.TestCase):
         self.assertIn('fc.bias', p)
         self.assertIn('bn.weight', p)
         self.assertIn('bn.bias', p)
-
-
 
 
 if __name__ == '__main__':

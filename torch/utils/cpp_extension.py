@@ -148,7 +148,7 @@ class BuildExtension(build_ext):
     def build_extensions(self):
         self._check_abi()
         for extension in self.extensions:
-            extension.extra_compile_args.append('-DTORCH_WITH_PYTHON_BINDINGS')
+            self._add_compile_flag(extension, '-DTORCH_WITH_PYTHON_BINDINGS')
             self._define_torch_extension_name(extension)
             self._add_gnu_abi_flag_if_binary(extension)
 
@@ -269,6 +269,13 @@ class BuildExtension(build_ext):
             compiler = os.environ.get('CXX', 'c++')
         check_compiler_abi_compatibility(compiler)
 
+    def _add_compile_flag(self, extension, flag):
+        if isinstance(extension.extra_compile_args, dict):
+            for args in extension.extra_compile_args.values():
+                args.append(flag)
+        else:
+            extension.extra_compile_args.append(flag)
+
     def _define_torch_extension_name(self, extension):
         # pybind11 doesn't support dots in the names
         # so in order to support extensions in the packages
@@ -277,11 +284,7 @@ class BuildExtension(build_ext):
         names = extension.name.split('.')
         name = names[-1]
         define = '-DTORCH_EXTENSION_NAME={}'.format(name)
-        if isinstance(extension.extra_compile_args, dict):
-            for args in extension.extra_compile_args.values():
-                args.append(define)
-        else:
-            extension.extra_compile_args.append(define)
+        self._add_compile_flag(extension, define)
 
     def _add_gnu_abi_flag_if_binary(self, extension):
         # If the version string looks like a binary build,
@@ -290,13 +293,8 @@ class BuildExtension(build_ext):
         # then we have to define _GLIBCXX_USE_CXX11_ABI=0
         # so that the std::string in the API is resolved to
         # non-C++11 symbols
-        define = '-D_GLIBCXX_USE_CXX11_ABI=0'
         if is_binary_build():
-            if isinstance(extension.extra_compile_args, dict):
-                for args in extension.extra_compile_args.values():
-                    args.append(define)
-            else:
-                extension.extra_compile_args.append(define)
+            self._add_compile_flag(extension, '-D_GLIBCXX_USE_CXX11_ABI=0')
 
 
 def CppExtension(name, sources, *args, **kwargs):
