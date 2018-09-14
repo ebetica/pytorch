@@ -26,6 +26,8 @@ class SequentialImpl : public Cloneable<SequentialImpl> {
   using Iterator = std::vector<AnyModule>::iterator;
   using ConstIterator = std::vector<AnyModule>::const_iterator;
 
+  SequentialImpl() = default;
+
   /// Constructs the `Sequential` from a pack of modules. Each module can either
   /// be a plain value (e.g. `Linear`) or a boxed value (e.g.
   /// `shared_ptr<Linear>`). Unboxed modules will be moved into `shared_ptr`s
