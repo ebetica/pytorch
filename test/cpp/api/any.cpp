@@ -1,7 +1,8 @@
 #include <catch.hpp>
 
+#include <torch/nn/module.h>
 #include <torch/nn/modules/any.h>
-#include <torch/torch.h>
+#include <torch/nn/modules/linear.h>
 #include <torch/utils.h>
 
 #include <algorithm>
@@ -68,8 +69,7 @@ TEST_CASE("any-module") {
     };
     AnyModule any(M{});
     REQUIRE(
-        any.forward(
-               std::string("a"), std::string("ab"), std::string("abc"))
+        any.forward(std::string("a"), std::string("ab"), std::string("abc"))
             .sum()
             .toCInt() == 6);
   }

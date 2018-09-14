@@ -182,7 +182,7 @@ class TestCppExtension(common.TestCase):
         '''
 
         cpp_source2 = '''
-        #include <torch/torch.h>
+        #include <torch/extension.h>
         at::Tensor sin_add(at::Tensor x, at::Tensor y);
         PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
           m.def("sin_add", &sin_add, "sin(x) + sin(y)");
@@ -316,18 +316,23 @@ class TestCppExtension(common.TestCase):
         self.assertEqual(result[0], 123)
 
     def test_cpp_api_extension(self):
+        here = os.path.abspath(__file__)
+        pytorch_root = os.path.dirname(os.path.dirname(here))
+        api_include = os.path.join(pytorch_root, 'torch', 'csrc', 'api', 'include')
         module = torch.utils.cpp_extension.load(
             name='cpp_api_extension',
             sources='cpp_extensions/cpp_api_extension.cpp',
+            extra_include_paths=api_include,
+            extra_cflags=['-UTORCH_API_INCLUDE_EXTENSION_H'],
             verbose=True)
 
         net = module.Net(3, 5)
 
-        self.assertTrue(net.is_training())
+        self.assertTrue(net.training)
         net.eval()
-        self.assertFalse(net.is_training())
+        self.assertFalse(net.training)
         net.train()
-        self.assertTrue(net.is_training())
+        self.assertTrue(net.training)
         net.eval()
 
         input = torch.randn(2, 3, dtype=torch.float32)

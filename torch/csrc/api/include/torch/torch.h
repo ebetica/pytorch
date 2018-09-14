@@ -8,6 +8,7 @@
 #include <torch/tensor.h>
 #include <torch/utils.h>
 
-#ifdef TORCH_WITH_PYTHON_BINDINGS
-#include <torch/python.h>
-#endif // defined(TORCH_WITH_PYTHON_BINDINGS)
+#ifdef TORCH_API_INCLUDE_EXTENSION_H
+#include <torch/extension.h>
+#warning "Including torch/torch.h for C++ extensions is deprecated. Please include torch/extension.h"
+#endif // defined(TORCH_API_INCLUDE_EXTENSION_H)

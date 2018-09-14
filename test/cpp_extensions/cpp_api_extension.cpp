@@ -1,3 +1,5 @@
+#include <torch/extension.h>
+#include <torch/python.h>
 #include <torch/torch.h>
 
 struct Net : torch::nn::Module {

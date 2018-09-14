@@ -148,7 +148,7 @@ class BuildExtension(build_ext):
     def build_extensions(self):
         self._check_abi()
         for extension in self.extensions:
-            self._add_compile_flag(extension, '-DTORCH_WITH_PYTHON_BINDINGS')
+            self._add_compile_flag(extension, '-DTORCH_API_INCLUDE_EXTENSION_H')
             self._define_torch_extension_name(extension)
             self._add_gnu_abi_flag_if_binary(extension)
 
@@ -404,11 +404,12 @@ def include_paths(cuda=False):
     here = os.path.abspath(__file__)
     torch_path = os.path.dirname(os.path.dirname(here))
     lib_include = os.path.join(torch_path, 'lib', 'include')
-    # Some internal (old) Torch headers don't properly prefix their includes,
-    # so we need to pass -Itorch/lib/include/TH as well.
     paths = [
         lib_include,
+        # Remove this once torch/torch.h is officially no longer supported for C++ extensions.
         os.path.join(lib_include, 'torch', 'csrc', 'api', 'include'),
+        # Some internal (old) Torch headers don't properly prefix their includes,
+        # so we need to pass -Itorch/lib/include/TH as well.
         os.path.join(lib_include, 'TH'),
         os.path.join(lib_include, 'THC')
     ]
@@ -558,7 +559,7 @@ def load_inline(name,
     the necessary header includes, as well as the (pybind11) binding code. More
     precisely, strings passed to ``cpp_sources`` are first concatenated into a
     single ``.cpp`` file. This file is then prepended with ``#include
-    <torch/torch.h>``.
+    <torch/extension.h>``.
 
     Furthermore, if the ``functions`` argument is supplied, bindings will be
     automatically generated for each function specified. ``functions`` can
@@ -608,7 +609,7 @@ def load_inline(name,
     if isinstance(cuda_sources, str):
         cuda_sources = [cuda_sources]
 
-    cpp_sources.insert(0, '#include <torch/torch.h>')
+    cpp_sources.insert(0, '#include <torch/extension.h>')
 
     # If `functions` is supplied, we create the pybind11 bindings for the user.
     # Here, `functions` is (or becomes, after some processing) a map from
@@ -819,7 +820,7 @@ def _write_ninja_file(path,
     sources = [os.path.abspath(file) for file in sources]
     user_includes = [os.path.abspath(file) for file in extra_include_paths]
 
-    # include_paths() gives us the location of torch/torch.h
+    # include_paths() gives us the location of torch/extension.h
     system_includes = include_paths(with_cuda)
     # sysconfig.get_paths()['include'] gives us the location of Python.h
     system_includes.append(sysconfig.get_paths()['include'])
@@ -830,7 +831,7 @@ def _write_ninja_file(path,
         system_includes.clear()
 
     common_cflags = ['-DTORCH_EXTENSION_NAME={}'.format(name)]
-    common_cflags.append('-DTORCH_WITH_PYTHON_BINDINGS')
+    common_cflags.append('-DTORCH_API_INCLUDE_EXTENSION_H')
     common_cflags += ['-I{}'.format(include) for include in user_includes]
     common_cflags += ['-isystem {}'.format(include) for include in system_includes]
 

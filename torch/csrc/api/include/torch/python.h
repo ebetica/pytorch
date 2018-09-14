@@ -1,10 +1,7 @@
 #pragma once
 
-#include <Python.h>
-
-#include <pybind11/pybind11.h>
 #include <torch/csrc/utils/pybind.h>
-#include <torch/csrc/variable_tensor_functions.h>
+#include <torch/tensor.h>
 
 #include <iterator>
 #include <string>
@@ -58,7 +55,7 @@ template <typename M, typename... Extra>
 py::class_<M, Extra...> add_module_bindings(py::class_<M, Extra...> module) {
   return module.def("train", [](M& module) { module.train(); })
       .def("eval", [](M& module) { module.eval(); })
-      .def("is_training", [](M& module) { return module.is_training(); })
+      .def_property_readonly("training", [](M& module) { return module.is_training(); })
       .def("zero_grad", [](M& module) { module.zero_grad(); })
       .def("cuda", [](M& module) { module.to(torch::kCUDA); })
       .def("cpu", [](M& module) { module.to(torch::kCPU); })
