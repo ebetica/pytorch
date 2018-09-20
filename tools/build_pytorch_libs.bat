@@ -174,7 +174,6 @@ goto:eof
                   -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
                   -DBUILD_TORCH="%BUILD_TORCH%" ^
                   -DNVTOOLEXT_HOME="%NVTOOLEXT_HOME%" ^
-                  -DNO_API=ON ^
                   -DBUILD_SHARED_LIBS="%BUILD_SHARED_LIBS%" ^
                   -DBUILD_PYTHON=OFF ^
                   -DBUILD_BINARY=%BUILD_BINARY% ^
