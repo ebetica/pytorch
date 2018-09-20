@@ -5,6 +5,7 @@ import subprocess
 import sys
 
 from setup_helpers.cuda import USE_CUDA
+from setup_helpers.cudnn import USE_CUDNN
 
 if __name__ == '__main__':
     # Placeholder for future interface. For now just gives a nice -h.
@@ -23,6 +24,8 @@ if __name__ == '__main__':
     command = [build_pytorch_libs, '--use-nnpack']
     if USE_CUDA:
         command.append('--use-cuda')
+    if USE_CUDNN:
+        command.append('--use-cudnn')
     if options.use_cereal:
         command.append('--use-cereal')
     command.append('caffe2')
