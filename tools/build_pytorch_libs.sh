@@ -15,12 +15,16 @@ USE_CUDA=0
 USE_ROCM=0
 USE_NNPACK=0
 USE_MKLDNN=0
+USE_CUDNN=0
 USE_GLOO_IBVERBS=0
 FULL_CAFFE2=0
 while [[ $# -gt 0 ]]; do
     case "$1" in
       --use-cuda)
           USE_CUDA=1
+          ;;
+      --use-cudnn)
+          USE_CUDNN=1
           ;;
       --use-rocm)
           USE_ROCM=1
@@ -266,6 +270,7 @@ function build_caffe2() {
       -DCAFFE2_STATIC_LINK_CUDA=$CAFFE2_STATIC_LINK_CUDA \
       -DUSE_ROCM=$USE_ROCM \
       -DUSE_NNPACK=$USE_NNPACK \
+      -DUSE_CUDNN=$USE_CUDNN \
       -DCUDNN_INCLUDE_DIR=$CUDNN_INCLUDE_DIR \
       -DCUDNN_LIB_DIR=$CUDNN_LIB_DIR \
       -DCUDNN_LIBRARY=$CUDNN_LIBRARY \
