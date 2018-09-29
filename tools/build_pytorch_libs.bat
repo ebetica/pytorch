@@ -82,7 +82,7 @@ IF "%CMAKE_GENERATOR%"=="" (
     IF "%CXX%"== "" set CXX=cl.exe
     set MAKE_COMMAND=cmake --build . --target install --config %BUILD_TYPE% -- -j%MAX_JOBS%
   ) ELSE (
-    set MAKE_COMMAND=msbuild INSTALL.vcxproj /p:Configuration=%BUILD_TYPE%
+    set MAKE_COMMAND=msbuild INSTALL.vcxproj /p:Configuration=%BUILD_TYPE% /m
   )
 )
 
@@ -135,7 +135,7 @@ goto:eof
                   -DCMAKE_INSTALL_PREFIX="%INSTALL_DIR%" ^
                   -DCMAKE_C_FLAGS="%C_FLAGS%" ^
                   -DCMAKE_SHARED_LINKER_FLAGS="%LINK_FLAGS%" ^
-                  -DCMAKE_CXX_FLAGS="%C_FLAGS% %CPP_FLAGS%" ^
+                  -DCMAKE_CXX_FLAGS="/MT /MP %C_FLAGS% %CPP_FLAGS%" ^
                   -DCUDA_NVCC_FLAGS="%BASIC_CUDA_FLAGS%" ^
                   -Dcwrap_files="%CWRAP_FILES%" ^
                   -DTH_INCLUDE_PATH="%INSTALL_DIR%/include" ^
@@ -174,6 +174,7 @@ goto:eof
                   -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
                   -DBUILD_TORCH="%BUILD_TORCH%" ^
                   -DNVTOOLEXT_HOME="%NVTOOLEXT_HOME%" ^
+                  -DNO_API=OFF ^
                   -DBUILD_SHARED_LIBS="%BUILD_SHARED_LIBS%" ^
                   -DBUILD_PYTHON=OFF ^
                   -DBUILD_BINARY=%BUILD_BINARY% ^
@@ -201,7 +202,7 @@ goto:eof
                   -DCMAKE_INSTALL_PREFIX="%INSTALL_DIR%" ^
                   -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ^
                   -DCMAKE_C_FLAGS="%USER_CFLAGS%" ^
-                  -DCMAKE_CXX_FLAGS="/EHa %USER_CFLAGS%" ^
+                  -DCMAKE_CXX_FLAGS="/MT /EHa /MP %USER_CFLAGS%" ^
                   -DCMAKE_EXE_LINKER_FLAGS="%USER_LDFLAGS%" ^
                   -DCMAKE_SHARED_LINKER_FLAGS="%USER_LDFLAGS%" ^
                   -DUSE_ROCM=%USE_ROCM%
