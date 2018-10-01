@@ -13,14 +13,14 @@
 namespace torch {
 namespace optim {
 
-struct AT_API AdagradOptions {
+struct TORCH_API AdagradOptions {
   AdagradOptions(double learning_rate);
   TORCH_ARG(double, learning_rate);
   TORCH_ARG(double, lr_decay) = 0;
   TORCH_ARG(double, weight_decay) = 0;
 };
 
-class AT_API Adagrad : public Optimizer {
+class TORCH_API Adagrad : public Optimizer {
  public:
   template <typename ParameterContainer>
   explicit Adagrad(

@@ -15,7 +15,7 @@
 namespace torch {
 namespace optim {
 
-struct AT_API SGDOptions {
+struct TORCH_API SGDOptions {
   /* implicit */ SGDOptions(double learning_rate);
   TORCH_ARG(double, learning_rate);
   TORCH_ARG(double, momentum) = 0;
@@ -24,7 +24,7 @@ struct AT_API SGDOptions {
   TORCH_ARG(bool, nesterov) = false;
 };
 
-class AT_API SGD : public Optimizer {
+class TORCH_API SGD : public Optimizer {
  public:
   template <typename ParameterContainer>
   explicit SGD(ParameterContainer&& parameters, const SGDOptions& options)

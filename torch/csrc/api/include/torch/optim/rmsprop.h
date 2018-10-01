@@ -14,7 +14,7 @@
 namespace torch {
 namespace optim {
 
-struct AT_API RMSpropOptions {
+struct TORCH_API RMSpropOptions {
   RMSpropOptions(double learning_rate);
   TORCH_ARG(double, learning_rate);
   TORCH_ARG(double, alpha) = 0.99;
@@ -24,7 +24,7 @@ struct AT_API RMSpropOptions {
   TORCH_ARG(bool, centered) = false;
 };
 
-class AT_API RMSprop : public Optimizer {
+class TORCH_API RMSprop : public Optimizer {
  public:
   template <typename ParameterContainer>
   explicit RMSprop(

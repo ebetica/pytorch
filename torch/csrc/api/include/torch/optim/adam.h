@@ -13,7 +13,7 @@
 namespace torch {
 namespace optim {
 
-struct AT_API AdamOptions {
+struct TORCH_API AdamOptions {
   /* implicit */ AdamOptions(double learning_rate);
   TORCH_ARG(double, learning_rate);
   TORCH_ARG(double, beta1) = 0.9;
@@ -23,7 +23,7 @@ struct AT_API AdamOptions {
   TORCH_ARG(bool, amsgrad) = false;
 };
 
-class AT_API Adam : public Optimizer {
+class TORCH_API Adam : public Optimizer {
  public:
   template <typename ParameterContainer>
   explicit Adam(ParameterContainer&& parameters, const AdamOptions& options)

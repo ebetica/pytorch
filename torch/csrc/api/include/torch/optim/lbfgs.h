@@ -14,7 +14,7 @@
 namespace torch {
 namespace optim {
 
-struct AT_API LBFGSOptions {
+struct TORCH_API LBFGSOptions {
   LBFGSOptions(double learning_rate);
   TORCH_ARG(double, learning_rate);
   TORCH_ARG(int64_t, max_iter) = 20;
@@ -24,7 +24,7 @@ struct AT_API LBFGSOptions {
   TORCH_ARG(size_t, history_size) = 100;
 };
 
-class AT_API LBFGS : public LossClosureOptimizer {
+class TORCH_API LBFGS : public LossClosureOptimizer {
  public:
   template <typename ParameterContainer>
   explicit LBFGS(ParameterContainer&& parameters, const LBFGSOptions& options)
