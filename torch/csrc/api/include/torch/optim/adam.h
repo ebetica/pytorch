@@ -47,9 +47,9 @@ class TORCH_API Adam : public Optimizer {
   std::vector<Tensor> exp_average_sq_buffers;
   std::vector<Tensor> max_exp_average_sq_buffers;
 
- private:
   Adam() : options(0) {}
 
+ private:
   template <typename Self, typename Archive>
   static void serialize(Self& self, Archive& archive) {
     _TORCH_OPTIM_SERIALIZE(step_buffers);

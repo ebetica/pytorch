@@ -51,9 +51,9 @@ class TORCH_API RMSprop : public Optimizer {
   std::vector<Tensor> momentum_buffers;
   std::vector<Tensor> grad_average_buffers;
 
- private:
   RMSprop() : options(0) {}
 
+ private:
   template <typename Self, typename Archive>
   static void serialize(Self& self, Archive& archive) {
     _TORCH_OPTIM_SERIALIZE(square_average_buffers);
