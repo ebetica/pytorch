@@ -9,6 +9,9 @@ import sys
 # Please don't add it here unless it's only used in LibTorch.
 from setup_helpers.configure import get_libtorch_env_with_flags
 
+from setup_helpers.env import IS_LINUX
+from setup_helpers.dist_check import USE_DISTRIBUTED
+
 if __name__ == '__main__':
     # Placeholder for future interface. For now just gives a nice -h.
     parser = argparse.ArgumentParser(description='Build libtorch')
@@ -23,6 +26,8 @@ if __name__ == '__main__':
     command = [build_pytorch_libs]
     my_env, extra_flags = get_libtorch_env_with_flags()
     command.extend(extra_flags)
+    if USE_DISTRIBUTED and IS_LINUX:
+        command.append('--use-distributed')
     command.append('caffe2')
 
     sys.stdout.flush()

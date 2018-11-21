@@ -58,6 +58,7 @@ USE_ROCM=0
 USE_NNPACK=0
 USE_MKLDNN=0
 USE_QNNPACK=0
+USE_CUDNN=0
 USE_GLOO_IBVERBS=0
 CAFFE2_STATIC_LINK_CUDA=0
 RERUN_CMAKE=1
@@ -74,6 +75,9 @@ while [[ $# -gt 0 ]]; do
           ;;
       --use-fbgemm)
           USE_FBGEMM=1
+          ;;
+      --use-cudnn)
+          USE_CUDNN=1
           ;;
       --use-rocm)
           USE_ROCM=1
@@ -243,6 +247,7 @@ function build_caffe2() {
 		       -DUSE_GLOG=OFF \
 		       -DUSE_GFLAGS=OFF \
 		       -DUSE_SYSTEM_EIGEN_INSTALL=OFF \
+		       -DUSE_CUDNN=$USE_CUDNN \
 		       -DCUDNN_INCLUDE_DIR=$CUDNN_INCLUDE_DIR \
 		       -DCUDNN_LIB_DIR=$CUDNN_LIB_DIR \
 		       -DCUDNN_LIBRARY=$CUDNN_LIBRARY \
