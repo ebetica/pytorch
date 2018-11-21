@@ -7,6 +7,7 @@ import sys
 from setup_helpers.cuda import USE_CUDA
 from setup_helpers.dist_check import USE_DISTRIBUTED, USE_GLOO_IBVERBS, IS_LINUX
 from setup_helpers.env import check_env_flag
+from setup_helpers.cudnn import USE_CUDNN, CUDNN_LIB_DIR, CUDNN_INCLUDE_DIR, CUDNN_LIBRARY
 
 if __name__ == '__main__':
     # Placeholder for future interface. For now just gives a nice -h.
@@ -31,6 +32,11 @@ if __name__ == '__main__':
         command.append('--use-cuda')
         if os.environ.get('USE_CUDA_STATIC_LINK', False):
             command.append('--cuda-static-link')
+    if USE_CUDNN:
+        command.append('--use-cudnn')
+        os.environ['CUDNN_LIB_DIR'] = CUDNN_LIB_DIR
+        os.environ['CUDNN_INCLUDE_DIR'] = CUDNN_INCLUDE_DIR
+        os.environ['CUDNN_LIBRARY'] = CUDNN_LIBRARY
     if USE_DISTRIBUTED and IS_LINUX:
         if USE_GLOO_IBVERBS:
             command.append('--use-gloo-ibverbs')
