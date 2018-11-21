@@ -14,6 +14,9 @@ sys.path.append(pytorch_root)
 from tools.build_pytorch_libs import build_caffe2
 from tools.setup_helpers.cmake import CMake
 
+from setup_helpers.env import IS_LINUX
+from setup_helpers.dist_check import USE_DISTRIBUTED
+
 if __name__ == '__main__':
     # Placeholder for future interface. For now just gives a nice -h.
     parser = argparse.ArgumentParser(description='Build libtorch')
