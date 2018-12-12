@@ -487,7 +487,7 @@ struct SingleElementType : public Type {
     }
     return false;
   }
-protected:
+//protected: // Workaround to fix VC++ bug
   SingleElementType(TypePtr elem)
   : Type(Kind)
   , elem(std::move(elem))
