@@ -233,6 +233,9 @@ class CMake:
              'ONNX_ML',
              'ONNX_NAMESPACE',
              'PARALLEL_BACKEND',
+             'CUDA_HOST_COMPILER',
+             'CMAKE_C_COMPILER',
+             'CMAKE_CXX_COMPILER',
              'WERROR')
         })
 

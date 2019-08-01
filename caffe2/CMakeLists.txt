@@ -1,3 +1,16 @@
+if(${BUILDING_WITH_TORCH_LIBS})
+  set(caffe2_pybind11_rpath "${_rpath_portable_origin}/../../torch/lib")
+endif(${BUILDING_WITH_TORCH_LIBS})
+if(${CUDA_HOST_COMPILER})
+  set(CUDA_HOST_COMPILER "${CUDA_HOST_COMPILER}")
+endif(${CUDA_HOST_COMPILER})
+if(${CMAKE_C_COMPILER})
+  set(CMAKE_C_COMPILER "${CMAKE_C_COMPILER}")
+endif(${CMAKE_C_COMPILER})
+if(${CMAKE_CXX_COMPILER})
+  set(CMAKE_CXX_COMPILER "${CMAKE_CXX_COMPILER}")
+endif(${CMAKE_CXX_COMPILER})
+
 # ---[ Generate and install header and cpp files
 include(../cmake/Codegen.cmake)
 
